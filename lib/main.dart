@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/constants/routes.dart';
 import 'package:project1/views/login_view.dart';
 import 'package:project1/views/register_view.dart';
 import 'package:project1/views/verify_email_view.dart';
@@ -16,8 +17,9 @@ void main() {
     ),
     home: const HomePage(),
     routes: {
-      '/login/': (context) => const LoginView(),
-      '/register/': (context) => const RegisterView()
+      loginroute: (context) => const LoginView(),
+      registerroute: (context) => const RegisterView(),
+      notesroute: (context) => const NotesView(),
     },
   ));
 }
@@ -37,7 +39,7 @@ class HomePage extends StatelessWidget {
               final user = FirebaseAuth.instance.currentUser;
               if (user != null) {
                 if (user.emailVerified) {
-                  print('verified');
+                  devtools.log('verified');
                 } else {
                   return const VerifyEmailView();
                 }
@@ -48,14 +50,6 @@ class HomePage extends StatelessWidget {
               return const NotesView();
             default:
               return const CircularProgressIndicator();
-            //  final emailverified = user?.emailVerified ?? false;
-            // print(user);
-            //  if (emailverified == true) {
-
-            //  } else {
-            //    return const VerifyEmailView();
-            //  }
-
           }
         });
   }
@@ -83,11 +77,13 @@ class _NotesViewState extends State<NotesView> {
             onSelected: (value) async {
               switch (value) {
                 case MenuActions.logout:
-                  final shouldlogout = await ShowLogOutDialog(context);
+                  final shouldlogout = await showLogOutDialog(context);
                   if (shouldlogout) {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login/', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginroute,
+                      (_) => false,
+                    );
                   }
                   break;
               }
@@ -109,7 +105,7 @@ class _NotesViewState extends State<NotesView> {
   }
 }
 
-Future<bool> ShowLogOutDialog(BuildContext context) {
+Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
     builder: (context) {
