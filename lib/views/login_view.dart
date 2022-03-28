@@ -32,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('login'),
+        title: const Text('Giriş Yap'),
       ),
       body: Column(
         children: [
@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
-            decoration: const InputDecoration(hintText: 'Password'),
+            decoration: const InputDecoration(hintText: 'Şifre'),
           ),
           Center(
             child: Row(
@@ -56,6 +56,8 @@ class _LoginViewState extends State<LoginView> {
                 Center(
                   child: TextButton(
                       onPressed: () async {
+                        //    final user = FirebaseAuth.instance.currentUser;
+                        //     await user?.sendEmailVerification();
                         final email = _email.text;
                         final password = _password.text;
                         try {
@@ -71,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
                           }
                         }
                       },
-                      child: const Text('login')),
+                      child: const Text('Giriş yap!')),
                 ),
                 Center(
                     child: TextButton(
@@ -81,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
                             (route) => false,
                           );
                         },
-                        child: const Text('register'))),
+                        child: const Text('Hesabın yok mu? Üye ol!'))),
               ],
             ),
           ),

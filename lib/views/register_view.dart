@@ -32,7 +32,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        title: const Text('Üye ol'),
       ),
       body: Column(
         children: [
@@ -48,7 +48,7 @@ class _RegisterViewState extends State<RegisterView> {
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
-            decoration: const InputDecoration(hintText: 'Password'),
+            decoration: const InputDecoration(hintText: 'Şifre'),
           ),
           Row(
             children: [
@@ -72,7 +72,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ;
                     }
                   },
-                  child: const Text('Register')),
+                  child: const Text('Kaydı tamamla!')),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -80,7 +80,7 @@ class _RegisterViewState extends State<RegisterView> {
                       (route) => false,
                     );
                   },
-                  child: const Text('login'))
+                  child: const Text('Hesabın var mı? Giriş yap!')),
             ],
           ),
         ],
