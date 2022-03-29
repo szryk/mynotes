@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+import 'package:project1/utilities/show_error_dialog.dart';
 
 import '../constants/routes.dart';
 
@@ -58,18 +58,41 @@ class _RegisterViewState extends State<RegisterView> {
                     final email = _email.text;
                     final password = _password.text;
                     try {
-                      final userCredential = await FirebaseAuth.instance
+                      await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                              email: email, password: password);
-                      devtools.log(userCredential.toString());
+                        email: email,
+                        password: password,
+                      );
+                      final user = FirebaseAuth.instance.currentUser;
+                      user?.sendEmailVerification();
+                      Navigator.of(context).pushNamed(veriffyEmailRoute);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
-                        devtools.log('weak password');
+                        showErrorDialog(
+                          context,
+                          'Zayıf şifre',
+                        );
                       } else if (e.code == 'invalid-email') {
-                        devtools.log('invalid-email');
+                        await showErrorDialog(
+                          context,
+                          'Yanlış email',
+                        );
                       } else if (e.code == 'email-already-in-use') {
-                        devtools.log('mail already in use');
+                        await showErrorDialog(
+                          context,
+                          'email zaten kullanımda',
+                        );
+                      } else {
+                        await showErrorDialog(
+                          context,
+                          'hata: ${e.code}',
+                        );
                       }
+                    } catch (e) {
+                      await showErrorDialog(
+                        context,
+                        e.toString(),
+                      );
                     }
                   },
                   child: const Text('Kaydı tamamla!')),

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:project1/constants/routes.dart';
+
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
 
@@ -18,7 +20,8 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       ),
       body: Column(
         children: [
-          const Text('emailini onayla'),
+          const Text('Hesabını doğrulaman için mail gönderdik!'),
+          const Text('Eğer mail posta kutuna gelmediyse butona basabilirsin'),
           TextButton(
             onPressed: () async {
               final user = FirebaseAuth.instance.currentUser;
@@ -30,8 +33,17 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                 await user?.sendEmailVerification();
               }
             },
-            child: const Text('email onay kodu gönder'),
-          )
+            child: const Text("'Buton'"),
+          ),
+          TextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerroute,
+                  (route) => false,
+                );
+              },
+              child: const Text('Mailini yanlış mı girdin?'))
         ],
       ),
     );
