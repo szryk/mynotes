@@ -8,6 +8,7 @@ import 'package:project1/views/verify_email_view.dart';
 import 'firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
+// JEUX DAFENCE
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(

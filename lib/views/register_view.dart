@@ -16,6 +16,7 @@ class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _password;
 
   @override
+  // ignore: must_call_super
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
