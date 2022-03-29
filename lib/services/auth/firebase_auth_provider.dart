@@ -1,5 +1,5 @@
-import 'dart:html';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:project1/firebase_options.dart';
 import 'package:project1/services/auth/auth_user.dart';
 import 'package:project1/services/auth/auth_provider.dart';
 import 'package:project1/services/auth/auth_expections.dart';
@@ -7,7 +7,14 @@ import 'package:project1/services/auth/auth_expections.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 
-class FireBaseAuthProvider implements AuthProvider {
+class FirebaseAuthProvider implements AuthProvider {
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   @override
   Future<AuthUser> createUser({
     required String email,
@@ -27,10 +34,10 @@ class FireBaseAuthProvider implements AuthProvider {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw WeakPasswordAuthExpection();
-      } else if (e.code == 'invalid-email') {
-        throw InvalidEmailAuthExpection();
       } else if (e.code == 'email-already-in-use') {
         throw EmailAlreadyInUseAuthExpection();
+      } else if (e.code == 'invalid-email') {
+        throw InvalidEmailAuthExpection();
       } else {
         throw GenericAuthExpection();
       }
@@ -73,14 +80,14 @@ class FireBaseAuthProvider implements AuthProvider {
       } else {
         throw GenericAuthExpection();
       }
-    } catch (e) {
+    } catch (_) {
       throw GenericAuthExpection();
     }
   }
 
   @override
   Future<void> logOut() async {
-    final user = currentUser;
+    final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await FirebaseAuth.instance.signOut();
     } else {

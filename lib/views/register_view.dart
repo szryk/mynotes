@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/services/auth/auth_expections.dart';
+import 'package:project1/services/auth/auth_service.dart';
 import 'package:project1/utilities/show_error_dialog.dart';
 
 import '../constants/routes.dart';
@@ -58,40 +59,32 @@ class _RegisterViewState extends State<RegisterView> {
                     final email = _email.text;
                     final password = _password.text;
                     try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
+                      await AuthService.firebase().createUser(
                         email: email,
                         password: password,
                       );
-                      final user = FirebaseAuth.instance.currentUser;
-                      user?.sendEmailVerification();
+                      final user = AuthService.firebase().currentUser;
+                      AuthService.firebase().sendEmailVerification();
                       Navigator.of(context).pushNamed(veriffyEmailRoute);
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        showErrorDialog(
-                          context,
-                          'Zayıf şifre',
-                        );
-                      } else if (e.code == 'invalid-email') {
-                        await showErrorDialog(
-                          context,
-                          'Yanlış email',
-                        );
-                      } else if (e.code == 'email-already-in-use') {
-                        await showErrorDialog(
-                          context,
-                          'email zaten kullanımda',
-                        );
-                      } else {
-                        await showErrorDialog(
-                          context,
-                          'hata: ${e.code}',
-                        );
-                      }
-                    } catch (e) {
+                    } on WeakPasswordAuthExpection {
+                      showErrorDialog(
+                        context,
+                        'Zayıf şifre',
+                      );
+                    } on EmailAlreadyInUseAuthExpection {
                       await showErrorDialog(
                         context,
-                        e.toString(),
+                        'email zaten kullanımda',
+                      );
+                    } on InvalidEmailAuthExpection {
+                      await showErrorDialog(
+                        context,
+                        'Yanlış mail formatı',
+                      );
+                    } on GenericAuthExpection {
+                      await showErrorDialog(
+                        context,
+                        'bir hata oluştu',
                       );
                     }
                   },
