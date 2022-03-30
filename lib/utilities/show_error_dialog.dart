@@ -8,7 +8,7 @@ Future<void> showErrorDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Bir hata oluştu!'),
+        title: const Text('Bir hata oluştu'),
         content: Text(text),
         actions: [
           TextButton(
@@ -16,7 +16,7 @@ Future<void> showErrorDialog(
               Navigator.of(context).pop();
             },
             child: const Text('tamam'),
-          )
+          ),
         ],
       );
     },

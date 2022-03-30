@@ -4,25 +4,25 @@ import 'package:project1/services/auth/auth_service.dart';
 import 'package:project1/views/login_view.dart';
 import 'package:project1/views/register_view.dart';
 import 'package:project1/views/verify_email_view.dart';
-import 'dart:developer' as devtools show log;
 import 'views/notes_view.dart';
 
-// JEUX DAFENCE
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
-    title: 'Not Defteri',
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
+  runApp(
+    MaterialApp(
+      title: 'Not Defteri',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomePage(),
+      routes: {
+        loginroute: (context) => const LoginView(),
+        registerroute: (context) => const RegisterView(),
+        notesroute: (context) => const NotesView(),
+        veriffyEmailRoute: (context) => const VerifyEmailView(),
+      },
     ),
-    home: const HomePage(),
-    routes: {
-      loginroute: (context) => const LoginView(),
-      registerroute: (context) => const RegisterView(),
-      notesroute: (context) => const NotesView(),
-      veriffyEmailRoute: (context) => const VerifyEmailView(),
-    },
-  ));
+  );
 }
 
 class HomePage extends StatelessWidget {
@@ -38,15 +38,13 @@ class HomePage extends StatelessWidget {
               final user = AuthService.firebase().currentUser;
               if (user != null) {
                 if (user.isEmailVerified) {
-                  devtools.log('verified');
+                  return const NotesView();
                 } else {
                   return const VerifyEmailView();
                 }
               } else {
                 return const LoginView();
               }
-
-              return const NotesView();
             default:
               return const CircularProgressIndicator();
           }
