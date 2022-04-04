@@ -15,7 +15,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ana Menü'),
+        title: const Text('Notlar uygulaması'),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         actions: [
@@ -45,7 +45,7 @@ class _NotesViewState extends State<NotesView> {
           )
         ],
       ),
-      body: const Text('Merhaba Dünya'),
+      body: const Text('Uğuru seviyorum.'),
       backgroundColor: Colors.grey,
     );
   }
